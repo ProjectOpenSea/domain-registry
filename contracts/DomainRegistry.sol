@@ -34,7 +34,7 @@ contract DomainRegistry is DomainRegistryInterface {
         _hasDomainBeenRegistered[domain] = true;
 
         // Create the tag by hashing the string domain.
-        tag = bytes4(keccak256(abi.encode(domain)));
+        tag = bytes4(keccak256(abi.encodePacked(domain)));
 
         // Store the index of the new domain to be emitted in the event.
         uint256 index = _registry[tag].length;
