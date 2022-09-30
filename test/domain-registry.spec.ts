@@ -58,7 +58,30 @@ describe(`Domain Registry v${VERSION})`, function () {
 
       expect(
         await domainRegistryContract.getDomains(localHashOfOpenseaDomain)
-      ).to.deep.eq(["opensea.io"]);
+      ).to.deep.eq([openseaDomain]);
+    });
+
+    it("Should return multiple domains if more than one domain has been registered for the passed in tag", async () => {
+      const tag = "0xa9059cbb";
+
+      const expectedDomainArray = [
+        "join_tg_invmru_haha_fd06787(address,bool)",
+        "func_2093253501(bytes)",
+        "transfer(bytes4[9],bytes5[6],int48[11])",
+        "many_msg_babbage(bytes1)",
+      ];
+
+      await domainRegistryContract.setDomain(expectedDomainArray[0]);
+
+      await domainRegistryContract.setDomain(expectedDomainArray[1]);
+
+      await domainRegistryContract.setDomain(expectedDomainArray[2]);
+
+      await domainRegistryContract.setDomain(expectedDomainArray[3]);
+
+      expect(await domainRegistryContract.getDomains(tag)).to.deep.eq(
+        expectedDomainArray
+      );
     });
   });
 
