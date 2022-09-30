@@ -13,13 +13,13 @@ const config: HardhatUserConfig = {
   solidity: {
     compilers: [
       {
-        version: "0.8.14",
-        // settings: {
-        //   viaIR: false,
-        //   optimizer: {
-        //     enabled: false,
-        //   },
-        // },
+        version: "0.8.17",
+        settings: {
+          viaIR: false,
+          optimizer: {
+            enabled: false,
+          },
+        },
       },
     ],
   },
