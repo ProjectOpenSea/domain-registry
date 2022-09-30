@@ -94,17 +94,38 @@ describe(`Domain Registry v${VERSION})`, function () {
   });
 
   describe("getDomain", async () => {
-    it("Should revert if the index is out of bounds", async () => {
-      await domainRegistryContract.setDomain(openseaDomain);
+    const tag = "0xa9059cbb";
 
-      await expect(
-        domainRegistryContract.getDomain(localHashOfOpenseaDomain, 4)
-      )
+    const expectedDomainArray = [
+      "join_tg_invmru_haha_fd06787(address,bool)",
+      "func_2093253501(bytes)",
+      "transfer(bytes4[9],bytes5[6],int48[11])",
+      "many_msg_babbage(bytes1)",
+    ];
+
+    beforeEach(async () => {
+      await domainRegistryContract.setDomain(expectedDomainArray[0]);
+
+      await domainRegistryContract.setDomain(expectedDomainArray[1]);
+
+      await domainRegistryContract.setDomain(expectedDomainArray[2]);
+
+      await domainRegistryContract.setDomain(expectedDomainArray[3]);
+    });
+
+    it("Should revert if the index is out of bounds", async () => {
+      await expect(domainRegistryContract.getDomain(tag, 4))
         .to.be.revertedWithCustomError(
           domainRegistryContract,
           "DomainIndexOutOfRange"
         )
-        .withArgs(localHashOfOpenseaDomain, 1, 4);
+        .withArgs(tag, 3, 4);
+    });
+
+    it("Should return the domain for the tag at the given index", async () => {
+      expect(await domainRegistryContract.getDomain(tag, 2)).to.eq(
+        expectedDomainArray[2]
+      );
     });
   });
 });

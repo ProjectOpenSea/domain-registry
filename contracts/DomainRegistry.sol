@@ -98,8 +98,8 @@ contract DomainRegistry is DomainRegistryInterface {
 
         // Revert if the index parameter is out of range for the array of domains
         // corresponding to the tag.
-        if (index >= totalDomains) {
-            revert DomainIndexOutOfRange(tag, totalDomains, index);
+        if (index > totalDomains - 1) {
+            revert DomainIndexOutOfRange(tag, totalDomains - 1, index);
         }
 
         // Return the domain for the given tag at the given index.
