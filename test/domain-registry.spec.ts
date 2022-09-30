@@ -1,7 +1,6 @@
 import { expect } from "chai";
-import { ethers, network } from "hardhat";
-
 import { keccak256, toUtf8Bytes } from "ethers/lib/utils";
+import { ethers, network } from "hardhat";
 
 import { VERSION } from "./utils/helpers";
 
