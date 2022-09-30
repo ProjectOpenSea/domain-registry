@@ -25,8 +25,7 @@ describe(`Domain Registry v${VERSION})`, function () {
     const DomainRegistryContractFactory = await ethers.getContractFactory(
       "DomainRegistry"
     );
-    domainRegistryContract =
-      (await DomainRegistryContractFactory.deploy()) as DomainRegistryInterface;
+    domainRegistryContract = await DomainRegistryContractFactory.deploy();
   });
 
   describe("setDomain", async () => {
