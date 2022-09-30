@@ -101,8 +101,9 @@ jobs:
       - name: Install forge dependencies
         run: forge install
 
-      - name: Run tests
-        run: forge test -vvv
+  # commented out since repo doesn't have forge tests
+  #   - name: Run tests
+  #     run: forge test -vvv
 
   # uncomment to enable fork tests, once an ETH_RPC_URL secret is set
   # forge-fork:
