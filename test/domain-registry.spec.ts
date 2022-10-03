@@ -69,13 +69,21 @@ describe(`Domain Registry v${VERSION})`, function () {
         "many_msg_babbage(bytes1)",
       ];
 
-      await domainRegistryContract.setDomain(expectedDomainArray[0]);
+      expect(await domainRegistryContract.setDomain(expectedDomainArray[0]))
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedDomainArray[0], tag, 0);
 
-      await domainRegistryContract.setDomain(expectedDomainArray[1]);
+      expect(await domainRegistryContract.setDomain(expectedDomainArray[1]))
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedDomainArray[1], tag, 1);
 
-      await domainRegistryContract.setDomain(expectedDomainArray[2]);
+      expect(await domainRegistryContract.setDomain(expectedDomainArray[2]))
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedDomainArray[2], tag, 2);
 
-      await domainRegistryContract.setDomain(expectedDomainArray[3]);
+      expect(await domainRegistryContract.setDomain(expectedDomainArray[3]))
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedDomainArray[3], tag, 3);
 
       expect(await domainRegistryContract.getDomains(tag)).to.deep.eq(
         expectedDomainArray
