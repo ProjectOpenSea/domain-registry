@@ -70,7 +70,7 @@ contract DomainRegistry is DomainRegistryInterface {
      *
      * @return totalDomains The number of registered domains corresponding to the tag.
      */
-    function getTotalDomains(bytes4 tag)
+    function getNumberOfDomains(bytes4 tag)
         external
         view
         returns (uint256 totalDomains)
@@ -93,13 +93,13 @@ contract DomainRegistry is DomainRegistryInterface {
         view
         returns (string memory domain)
     {
-        // Get the number of domains that have been registered for the input tag.
-        uint256 totalDomains = _registry[tag].length;
+        // Get the maximum possible index of the array of registered domains for the input tag.
+        uint256 maxIndex = _registry[tag].length - 1;
 
         // Revert if the index parameter is out of range for the array of domains
         // corresponding to the tag.
-        if (index > totalDomains - 1) {
-            revert DomainIndexOutOfRange(tag, totalDomains - 1, index);
+        if (index > maxIndex) {
+            revert DomainIndexOutOfRange(tag, maxIndex, index);
         }
 
         // Return the domain for the given tag at the given index.
