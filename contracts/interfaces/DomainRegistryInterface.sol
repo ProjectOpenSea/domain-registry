@@ -8,7 +8,7 @@ interface DomainRegistryInterface {
         view
         returns (string[] memory domains);
 
-    function getTotalDomains(bytes4 tag)
+    function getNumberOfDomains(bytes4 tag)
         external
         view
         returns (uint256 totalDomains);
@@ -24,7 +24,7 @@ interface DomainRegistryInterface {
 
     error DomainIndexOutOfRange(
         bytes4 tag,
-        uint256 totalDomains,
+        uint256 maxIndex,
         uint256 suppliedIndex
     );
 }

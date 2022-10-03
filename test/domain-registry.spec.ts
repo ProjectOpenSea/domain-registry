@@ -14,6 +14,14 @@ describe(`Domain Registry v${VERSION})`, function () {
     10
   );
 
+  const exampleTag = "0xa9059cbb";
+  const expectedExampleDomainArray = [
+    "join_tg_invmru_haha_fd06787(address,bool)",
+    "func_2093253501(bytes)",
+    "transfer(bytes4[9],bytes5[6],int48[11])",
+    "many_msg_babbage(bytes1)",
+  ];
+
   after(async () => {
     await network.provider.request({
       method: "hardhat_reset",
@@ -60,79 +68,91 @@ describe(`Domain Registry v${VERSION})`, function () {
     });
 
     it("Should return multiple domains if more than one domain has been registered for the passed in tag", async () => {
-      const tag = "0xa9059cbb";
-
-      const expectedDomainArray = [
-        "join_tg_invmru_haha_fd06787(address,bool)",
-        "func_2093253501(bytes)",
-        "transfer(bytes4[9],bytes5[6],int48[11])",
-        "many_msg_babbage(bytes1)",
-      ];
-
-      expect(await domainRegistryContract.setDomain(expectedDomainArray[0]))
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[0])
+      )
         .to.emit(domainRegistryContract, "DomainRegistered")
-        .withArgs(expectedDomainArray[0], tag, 0);
+        .withArgs(expectedExampleDomainArray[0], exampleTag, 0);
 
-      expect(await domainRegistryContract.setDomain(expectedDomainArray[1]))
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[1])
+      )
         .to.emit(domainRegistryContract, "DomainRegistered")
-        .withArgs(expectedDomainArray[1], tag, 1);
+        .withArgs(expectedExampleDomainArray[1], exampleTag, 1);
 
-      expect(await domainRegistryContract.setDomain(expectedDomainArray[2]))
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[2])
+      )
         .to.emit(domainRegistryContract, "DomainRegistered")
-        .withArgs(expectedDomainArray[2], tag, 2);
+        .withArgs(expectedExampleDomainArray[2], exampleTag, 2);
 
-      expect(await domainRegistryContract.setDomain(expectedDomainArray[3]))
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[3])
+      )
         .to.emit(domainRegistryContract, "DomainRegistered")
-        .withArgs(expectedDomainArray[3], tag, 3);
+        .withArgs(expectedExampleDomainArray[3], exampleTag, 3);
 
-      expect(await domainRegistryContract.getDomains(tag)).to.deep.eq(
-        expectedDomainArray
+      expect(await domainRegistryContract.getDomains(exampleTag)).to.deep.eq(
+        expectedExampleDomainArray
       );
     });
   });
 
-  describe("getTotalDomains", async () => {
+  describe("getNumberOfDomains", async () => {
     it("Should return the total number of registered domains for a given tag", async () => {
-      await domainRegistryContract.setDomain(openseaDomain);
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[0])
+      )
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedExampleDomainArray[0], exampleTag, 0);
 
       expect(
-        await domainRegistryContract.getTotalDomains(localHashOfOpenseaDomain)
-      ).to.eq(1);
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[1])
+      )
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedExampleDomainArray[1], exampleTag, 1);
+
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[2])
+      )
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedExampleDomainArray[2], exampleTag, 2);
+
+      expect(
+        await domainRegistryContract.setDomain(expectedExampleDomainArray[3])
+      )
+        .to.emit(domainRegistryContract, "DomainRegistered")
+        .withArgs(expectedExampleDomainArray[3], exampleTag, 3);
+
+      expect(await domainRegistryContract.getNumberOfDomains(exampleTag)).to.eq(
+        4
+      );
     });
   });
 
   describe("getDomain", async () => {
-    const tag = "0xa9059cbb";
-
-    const expectedDomainArray = [
-      "join_tg_invmru_haha_fd06787(address,bool)",
-      "func_2093253501(bytes)",
-      "transfer(bytes4[9],bytes5[6],int48[11])",
-      "many_msg_babbage(bytes1)",
-    ];
-
     beforeEach(async () => {
-      await domainRegistryContract.setDomain(expectedDomainArray[0]);
+      await domainRegistryContract.setDomain(expectedExampleDomainArray[0]);
 
-      await domainRegistryContract.setDomain(expectedDomainArray[1]);
+      await domainRegistryContract.setDomain(expectedExampleDomainArray[1]);
 
-      await domainRegistryContract.setDomain(expectedDomainArray[2]);
+      await domainRegistryContract.setDomain(expectedExampleDomainArray[2]);
 
-      await domainRegistryContract.setDomain(expectedDomainArray[3]);
+      await domainRegistryContract.setDomain(expectedExampleDomainArray[3]);
     });
 
     it("Should revert if the index is out of bounds", async () => {
-      await expect(domainRegistryContract.getDomain(tag, 4))
+      await expect(domainRegistryContract.getDomain(exampleTag, 4))
         .to.be.revertedWithCustomError(
           domainRegistryContract,
           "DomainIndexOutOfRange"
         )
-        .withArgs(tag, 3, 4);
+        .withArgs(exampleTag, 3, 4);
     });
 
     it("Should return the domain for the tag at the given index", async () => {
-      expect(await domainRegistryContract.getDomain(tag, 2)).to.eq(
-        expectedDomainArray[2]
+      expect(await domainRegistryContract.getDomain(exampleTag, 2)).to.eq(
+        expectedExampleDomainArray[2]
       );
     });
   });
